@@ -1,45 +1,52 @@
 import React, { useEffect, useState } from "react";
-//useState
+import { connect } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { decrementAction, incrementAction } from "../Actions/Increment";
 
-export const Count = () => {
-  const [count, setCount] = useState(0);
-  const [name, setName] = useState("amit");
-  const [showName, setShowName] = useState(false);
-
-  useEffect(() => {
-    console.log("clicked");
-  }, []);
-
+const Count = (props) => {
   const handleIncrement = () => {
-    setCount(count + 1);
+    props.dispatch(incrementAction());
   };
 
-  const handleDecrment = () => {
-    setCount(count - 1);
+  const handleDecrement = () => {
+    props.dispatch(decrementAction());
   };
-
-  const handleReset = () => {
-    setCount(0);
-  };
-
-  const handleReverse = () => {
-    setShowName((x) => !x);
-  };
+  console.log("props", props.counts);
   return (
     <div>
-      <h3>Count : {count}</h3>
+      <h3>Count : {props.counts}</h3>
       <button onClick={handleIncrement}>Increment</button>
-      <button onClick={handleDecrment}>Decrement</button>
-      <button onClick={handleReset}>Reset</button>
-      <h3>name : {showName ? name.split("").reverse().join("") : name}</h3>
-      <button onClick={handleReverse}>
-        {showName ? "reverse" : "reversed"}
-      </button>
+      <button onClick={handleDecrement}>Decrement</button>
+      <button>Reset</button>
+      <ul>
+        {props.data.map((ele) => (
+          <li key={ele.id}>
+            {ele.email} - {ele.name} - {ele.phone}
+          </li>
+        ))}
+      </ul>
+      <br />
+      <br />
     </div>
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    counts: state.count,
+    data: state.data,
+  };
+};
+
+export default connect(mapStateToProps)(Count);
+
+//higherordercomponent
 //login signup
 //react virtual dom concept
 //virtual document object module
 //state changes it will re-render the component
+//Rest API :CRUD operation
+//GraphQL : mutations queries : making any update mutations : if you are justreading the queries
+//CREATE READ UPDTAE DELETE
+//redux actions: functions which consist database and it should return object
+//reducers : previous state action

@@ -1,6 +1,9 @@
+import { getThemeProps } from "@material-ui/styles";
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-export const Login = () => {
+const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [color, setColor] = useState(false);
@@ -34,9 +37,11 @@ export const Login = () => {
   const handleDropDownChange = (e) => {
     console.log(e.target.value);
   };
+
   return (
     <div>
       <h3>Login</h3>
+      <h3>Count:{props.count}</h3>
       <form onSubmit={handleSubmit}>
         <label>Email :</label>
         <input
@@ -69,7 +74,17 @@ export const Login = () => {
           ))}
         </select>
       </form>
+      <div>
+        <button>Add</button>
+      </div>
     </div>
   );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    count: state.count,
+  };
+};
+export default connect(mapStateToProps)(Login);
 //input : text , email , password, file , color, number, date, datetime-local, submit , dropdown , textArea
